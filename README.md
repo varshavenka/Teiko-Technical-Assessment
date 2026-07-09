@@ -1,16 +1,35 @@
 # Loblaw Bio Immune Cell Population Analysis
 
 ## Project Status
-Part 1: Data Management complete
-Parts 2–4 and dashboard in progress
+Part 1: Data Management ~ complete
+Part 2: Initial Analysis - Data Overview ~ complete 
+Parts 3–4 and dashboard in progress
 
-## How to Run Part 1
+## How to Run
+### Part 1
 1. Make sure `cell-count.csv` is in the repo root
 2. Run:
 ```bash
    python load_data.py
 ```
 3. This creates `cell_counts.db` in the repo root
+
+### Part 2
+1. Run:
+```bash
+python summary.py
+```
+This reads from `cell_counts.db` and produces `summary_table.csv`, a
+long-format table where each row is one population from one sample:
+
+| Column | Description |
+|---|---|
+| `sample` | sample ID |
+| `total_count` | total cell count across all 5 populations for that sample |
+| `population` | immune cell population (e.g. `b_cell`) |
+| `count` | raw cell count for that population in that sample |
+| `percentage` | `count` as a percentage of `total_count` |
+
 
 
 ## Database Schema
@@ -44,5 +63,8 @@ Four tables:
   `cell_counts` to keep downstream queries/dashboards fast
 
 ## Code Structure
+- `summary.py` reads directly from `cell_counts.db` rather than the CSV to 
+keep each script focused on one task 
+- This also means that Part 2 can be rerun without needing to reload the raw data
 
 ## Link to Dashboard
