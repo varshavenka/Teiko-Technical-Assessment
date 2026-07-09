@@ -1,0 +1,8 @@
+metric,value
+samples_in_prj1,384
+samples_in_prj3,272
+responders,331
+non_responders,325
+male_subjects,344
+female_subjects,312
+avg_b_cells_melanoma_male_responders_t0,10401.28
