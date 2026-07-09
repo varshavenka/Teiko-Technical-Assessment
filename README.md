@@ -138,9 +138,16 @@ than rereading the CSV each time.
 Run in order:
 ```bash
 python load_data.py
-python summary.py
+python data_overview.py
 python stat_analysis.py
 python subset_analysis.py
 ```
 
-## Link to Dashboard
+## Dashboard
+1. Run:
+```bash
+python dashboard.py
+```
+Then open http://127.0.0.1:8050/ in your browser to view
+
+The dashboard displays the data and results from parts 1-4. 

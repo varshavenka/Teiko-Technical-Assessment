@@ -1,0 +1,8 @@
+# libraries needed to run code
+# run `pip install -r requirements.txt` to install all dependencies
+pandas
+scipy
+matplotlib
+seaborn
+dash
+plotly
