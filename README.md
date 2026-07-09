@@ -30,7 +30,39 @@ long-format table where each row is one population from one sample:
 | `count` | raw cell count for that population in that sample |
 | `percentage` | `count` as a percentage of `total_count` |
 
+### Part 3
+1. Run with:
+```bash
+python stat_analysis.py
+```
+This compares relative frequencies of each immune cell population between
+miraclib responders and non-responders, restricted to:
+- melanoma patients
+- treated with miraclib
+- PBMC samples only
 
+#### Method
+For each of the 5 populations, a Welch's t-test was used to compare the
+mean percentage between responders and non-responders. A Welch's t-test was
+chosen over a standard t-test because it doesn't assume both groups have
+equal variance. With about 985 samples per group, the sample size is large enough
+that the t-test is reasonably robust even if the underlying data isn't
+perfectly normally distributed.
+
+#### Outputs
+- `boxplots/` — one boxplot per population (`b_cell_boxplot.png`,
+  `cd8_t_cell_boxplot.png`, etc.), visually comparing responders vs
+  non-responders.
+- `stats_results.csv` — for each population: sample sizes, mean
+  percentage for each group, p-value, and whether the result is
+  significant at p < 0.05.
+
+#### Finding
+`cd4_t_cell` was the only population with a statistically significant
+difference, meaning responders had a higher mean relative frequency
+(about 30.5%) than non-responders (about 29.9%). The other 4 populations
+(`b_cell`, `cd8_t_cell`, `nk_cell`, `monocyte`) did not show a
+significant difference.
 
 ## Database Schema
 Four tables:
