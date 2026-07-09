@@ -1,11 +1,20 @@
 # Loblaw Bio Immune Cell Population Analysis
 
 ## Project Status
-Part 1: Data Management ~ complete
-Part 2: Initial Analysis - Data Overview ~ complete 
-Parts 3–4 and dashboard in progress
+Parts 1–4 complete. 
+Dashboard in progress.
 
-## How to Run
+### Running the Full Pipeline
+Run each step in order:
+```bash
+python load_data.py
+python summary.py
+python stat_analysis.py
+python subset_analysis.py
+```
+This creates `cell_counts.db` and generates all output files
+(`summary_table.csv`, `stats_results.csv`, `boxplots/`, `subset_summary.csv`)
+
 ### Part 1
 1. Make sure `cell-count.csv` is in the repo root
 2. Run:
@@ -31,7 +40,7 @@ long-format table where each row is one population from one sample:
 | `percentage` | `count` as a percentage of `total_count` |
 
 ### Part 3
-1. Run with:
+1. Run:
 ```bash
 python stat_analysis.py
 ```
@@ -64,6 +73,33 @@ difference, meaning responders had a higher mean relative frequency
 (`b_cell`, `cd8_t_cell`, `nk_cell`, `monocyte`) did not show a
 significant difference.
 
+### Part 4: Baseline Subset Analysis
+1. Run:
+```bash
+python subset_analysis.py
+```
+This filters the data to melanoma patients, treated with miraclib, with
+a PBMC sample at baseline (`time_from_treatment_start = 0`), and reports:
+
+- How many samples come from each project
+- How many subjects are responders vs non-responders
+- How many subjects are male vs female
+- The average B cell count for melanoma male responders at baseline
+
+### Results
+
+| Metric | Value |
+|---|---|
+| Samples in prj1 | 384 |
+| Samples in prj3 | 272 |
+| Responders | 331 |
+| Non-responders | 325 |
+| Male subjects | 344 |
+| Female subjects | 312 |
+| Avg B cells (melanoma, male, responder, t=0) | 10401.2 |
+
+Full output saved to `subset_summary.csv`.
+
 ## Database Schema
 Four tables:
 - **`projects`** — one row per project (`project_id`).
@@ -95,8 +131,16 @@ Four tables:
   `cell_counts` to keep downstream queries/dashboards fast
 
 ## Code Structure
-- `summary.py` reads directly from `cell_counts.db` rather than the CSV to 
-keep each script focused on one task 
-- This also means that Part 2 can be rerun without needing to reload the raw data
+Each part is its own script rather than one combined file, so each stays
+focused on a single question and can be rerun independently. All four scripts query the same database rather
+than rereading the CSV each time.
+
+Run in order:
+```bash
+python load_data.py
+python summary.py
+python stat_analysis.py
+python subset_analysis.py
+```
 
 ## Link to Dashboard
