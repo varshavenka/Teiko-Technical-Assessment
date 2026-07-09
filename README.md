@@ -1,34 +1,33 @@
 # Loblaw Bio Immune Cell Population Analysis
 
 ## Project Status
-Parts 1–4 complete. 
-Dashboard in progress.
+Parts 1–4 and Dashboard are complete.
 
 ### Running the Full Pipeline
 Run each step in order:
 ```bash
-python load_data.py
-python summary.py
-python stat_analysis.py
-python subset_analysis.py
+python3 load_data.py
+python3 data_overview.py
+python3 stat_analysis.py
+python3 subset_analysis.py
 ```
 This creates `cell_counts.db` and generates all output files
-(`summary_table.csv`, `stats_results.csv`, `boxplots/`, `subset_summary.csv`)
+(`data_overview.csv`, `stats_analysis.csv`, `boxplots/`, `subset_analysis.csv`)
 
 ### Part 1
 1. Make sure `cell-count.csv` is in the repo root
 2. Run:
 ```bash
-   python load_data.py
+   python3 load_data.py
 ```
 3. This creates `cell_counts.db` in the repo root
 
 ### Part 2
 1. Run:
 ```bash
-python summary.py
+python3 data_overview.py
 ```
-This reads from `cell_counts.db` and produces `summary_table.csv`, a
+This reads from `cell_counts.db` and produces `data_overview.csv`, a
 long-format table where each row is one population from one sample:
 
 | Column | Description |
@@ -42,7 +41,7 @@ long-format table where each row is one population from one sample:
 ### Part 3
 1. Run:
 ```bash
-python stat_analysis.py
+python3 stat_analysis.py
 ```
 This compares relative frequencies of each immune cell population between
 miraclib responders and non-responders, restricted to:
@@ -62,7 +61,7 @@ perfectly normally distributed.
 - `boxplots/` — one boxplot per population (`b_cell_boxplot.png`,
   `cd8_t_cell_boxplot.png`, etc.), visually comparing responders vs
   non-responders.
-- `stats_results.csv` — for each population: sample sizes, mean
+- `stats_analysis.csv` — for each population: sample sizes, mean
   percentage for each group, p-value, and whether the result is
   significant at p < 0.05.
 
@@ -76,7 +75,7 @@ significant difference.
 ### Part 4: Baseline Subset Analysis
 1. Run:
 ```bash
-python subset_analysis.py
+python3 subset_analysis.py
 ```
 This filters the data to melanoma patients, treated with miraclib, with
 a PBMC sample at baseline (`time_from_treatment_start = 0`), and reports:
@@ -96,10 +95,22 @@ a PBMC sample at baseline (`time_from_treatment_start = 0`), and reports:
 | Non-responders | 325 |
 | Male subjects | 344 |
 | Female subjects | 312 |
-| Avg B cells (melanoma, male, responder, t=0) | 10401.2 |
+| Avg B cells (melanoma, male, responder, t=0) | 10401.28 |
 
-Full output saved to `subset_summary.csv`.
-
+Full output saved to `subset_analysis.csv`.
+## Makefile
+This project includes a `Makefile` with three targets used for grading via GitHub Codespaces:
+```bash
+make setup      # installs all dependencies from requirements.txt
+make pipeline   # loads data to display visuals
+make dashboard  # starts the dashboard 
+```
+To run the entire project from scratch:
+```bash
+make setup
+make pipeline
+make dashboard
+```
 ## Database Schema
 Four tables:
 - **`projects`** — one row per project (`project_id`).
@@ -137,17 +148,19 @@ than rereading the CSV each time.
 
 Run in order:
 ```bash
-python load_data.py
-python data_overview.py
-python stat_analysis.py
-python subset_analysis.py
+python3 load_data.py
+python3 data_overview.py
+python3 stat_analysis.py
+python3 subset_analysis.py
 ```
 
 ## Dashboard
 1. Run:
 ```bash
-python dashboard.py
+python3 dashboard.py
 ```
 Then open http://127.0.0.1:8050/ in your browser to view
 
-The dashboard displays the data and results from parts 1-4. 
+The dashboard displays results from Parts 1–4 and runs locally by default.
+
+Since grading is done via GitHub Codespaces, running `make dashboard` will start the server there, and Codespaces will automatically provide a link to view it.
